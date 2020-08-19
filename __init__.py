@@ -101,7 +101,7 @@ def gpl_append(a_l_block, a_imp_end, a_mc_end, gpl):
     if a_l_block is True:
         
         bpy.ops.text.jump(line=a_imp_end+1)
-        bpy.ops.text.insert(text="from . import addon_updater_ops")
+        bpy.ops.text.insert(text="from . import addon_updater_ops\n")
 
         bpy.ops.text.jump(line=1)
         bpy.ops.text.select_line()
@@ -114,7 +114,7 @@ def gpl_append(a_l_block, a_imp_end, a_mc_end, gpl):
         a_mc_end += 21
     else:
         bpy.ops.text.jump(line=a_imp_end+1)
-        bpy.ops.text.insert(text="from . import addon_updater_ops")
+        bpy.ops.text.insert(text="from . import addon_updater_ops\n")
     return a_mc_end
 
 def classes_register(text):
