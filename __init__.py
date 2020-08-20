@@ -26,9 +26,9 @@ bl_info = {
     "blender": (2, 80, 0),
     "location": "Text Editor > Text > Implement Addon Updater",
     "description": "Implement the Addon Updater the easy way.",
-    "warning": "",
-    "wiki_url": "",
-    "tracker_url": "",
+    "warning": "Checkout Gumroad for other Addons and more...",
+    "wiki_url": "https://github.com/BlenderDefender/implement_addon_updater",
+    "tracker_url": "https://github.com/BlenderDefender/implement_addon_updater/issues/new",
     "category": "Development"}
 
 import bpy
