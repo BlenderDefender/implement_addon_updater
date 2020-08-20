@@ -246,6 +246,8 @@ class IMPLEMENTUPDATER_APT_Preferences(bpy.types.AddonPreferences):
         # col = layout.column() # works best if a column, or even just self.layout
         mainrow = layout.row()
         col = mainrow.column()
+        layout.operator("wm.url_open", text="Checkout Gumroad for other addons and more...", icon='FUND').url="https://gumroad.com/blenderdefender"
+
 
         # updater draw function
         # could also pass in col as third arg
