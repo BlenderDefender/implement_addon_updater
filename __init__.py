@@ -22,7 +22,7 @@
 bl_info = {
     "name": "Implement Addon Updater",
     "author": "Blender Defender",
-    "version": (1, 0),
+    "version": (1, 0, 0),
     "blender": (2, 80, 0),
     "location": "Text Editor > Text > Implement Addon Updater",
     "description": "Implement the Addon Updater the easy way.",
