@@ -4,7 +4,7 @@ This tool built for developers Helps you to implement the Addon Updater by [CG C
 
 Taking your Addon to the next level with the Addon Updater is as easy as 3 simple Steps:
 1. Go to Text >> Implement Addon Updater and Fill in the properties
-(Picture coming soon)
+![Open Headfile](/Screenshots/picture 1.png?raw=true)
 (Picture coming soon)
 2. Press OK and Follow the Instructions:
 (Picture coming soon)
