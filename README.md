@@ -15,3 +15,10 @@ Taking your Addon to the next level with the Addon Updater is as easy as 3 simpl
 
 And thats it. Now you got your Addon with a working addon updater:
 ![Open Headfile](/Screenshots/Gif4.gif?raw=true)
+
+## System requirements:
+| **OS** | **Blender** |
+| ------------- | ------------- |
+| OSX | Testing, please give feedback if it works for you. |
+| Windows | Blender 2.80+ |
+| Linux | Testing, please give feedback if it works for you. |
