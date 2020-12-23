@@ -14,7 +14,7 @@ Taking your Addon to the next level with the Addon Updater is as easy as 3 simpl
 (Picture coming soon)
 
 And thats it. Now you got your Addon with a working addon updater:
-![Open Headfile](/Screenshots/Final-Step.mp4?raw=true)
+![Open Headfile](/Screenshots/Gif4.gif?raw=true)
 
 ## System requirements:
 | **OS** | **Blender** |
