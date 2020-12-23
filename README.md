@@ -9,7 +9,7 @@ Taking your Addon to the next level with the Addon Updater is as easy as 3 simpl
 ![Open Headfile](/Screenshots/Gif1.gif?raw=true)
 2. Press OK and Follow the Instructions:
 ![Open Headfile](/Screenshots/Gif2.gif?raw=true)
-![Open Headfile](/Screenshots/Gif3.gif?raw=true)
+![Open Headfile](/Screenshots/Jump3.gif?raw=true)
 3. (Optional) Create the Github/GitLab/Bitbucket repository with the repository name you filled in in step two:
 (Picture coming soon)
 
