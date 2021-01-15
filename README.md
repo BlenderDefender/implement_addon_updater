@@ -1,3 +1,5 @@
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?hosted_button_id=TV9HL7YRHZR7U)  
+
 # Implement Addon updater
 
 This tool built for developers Helps you to implement the Addon Updater by [CG Cookie](https://github.com/CGCookie/blender-addon-updater).
@@ -26,3 +28,4 @@ And thats it. Now you got your Addon with a working addon updater:
 | OSX | Testing, please give feedback if it works for you. |
 | Windows | Blender 2.80+ |
 | Linux | Testing, please give feedback if it works for you. |
+
