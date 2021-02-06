@@ -1,5 +1,7 @@
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?hosted_button_id=TV9HL7YRHZR7U)  
-
+![GitHub](https://img.shields.io/github/license/BlenderDefender/implement_addon_updater?color=green&style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/BlenderDefender/implement_addon_updater?style=for-the-badge)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/BlenderDefender/implement_addon_updater?style=for-the-badge)
 # Implement Addon updater
 
 This tool built for developers Helps you to implement the Addon Updater by [CG Cookie](https://github.com/CGCookie/blender-addon-updater).
