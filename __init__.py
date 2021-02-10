@@ -59,13 +59,13 @@ def updater_engine(context, machine):
     if machine == "github":
         print("updater.engine = GitHub")
         context.space_data.text = bpy.data.texts['addon_updater_ops.py']
-        bpy.ops.text.jump(line=1259)
+        bpy.ops.text.jump(line=1323)
 
         
     elif machine == "gitlab":
         print("updater.engine = GitLab")
         context.space_data.text = bpy.data.texts['addon_updater_ops.py']
-        bpy.ops.text.jump(line=1259)
+        bpy.ops.text.jump(line=1323)
         bpy.ops.text.select_line()
         bpy.ops.text.cut()
         bpy.ops.text.insert(text='\tupdater.engine = "GitLab"')
@@ -73,7 +73,7 @@ def updater_engine(context, machine):
     elif machine == "bitbucket":
         print("updater.engine = Bitbucket")
         context.space_data.text = bpy.data.texts['addon_updater_ops.py']
-        bpy.ops.text.jump(line=1259)
+        bpy.ops.text.jump(line=1323)
         bpy.ops.text.select_line()
         bpy.ops.text.cut()
         bpy.ops.text.insert(text='\tupdater.engine = "Bitbucket"')
