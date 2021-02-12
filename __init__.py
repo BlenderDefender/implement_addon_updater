@@ -276,6 +276,8 @@ def register():
     # so that users can revert back to a working version
     addon_updater_ops.register(bl_info)
 
+    bpy.types.TEXT_MT_text.append(menu_func)
+
     # register the example panel, to show updater buttons
     for cls in classes:
         addon_updater_ops.make_annotations(cls) # to avoid blender 2.8 warnings
@@ -285,6 +287,8 @@ def register():
 def unregister():
     # addon updater unregister
     addon_updater_ops.unregister()
+
+    bpy.types.TEXT_MT_text.remove(menu_func)
 
     # register the example panel, to show updater buttons
     for cls in reversed(classes):
