@@ -11,20 +11,20 @@ This tool built for developers Helps you to implement the Addon Updater by [CG C
 Taking your Addon to the next level with the Addon Updater is as easy as 3 simple Steps:
 1. Go to Text >> Implement Addon Updater and Fill in the properties
 
-![Open Headfile](/Screenshots/CallDialog.gif)
-![Open Headfile](/Screenshots/Dialog2.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/CallDialog.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Dialog2.gif)
 
 2. Press OK and Follow the Instructions:
 
-![Open Headfile](/Screenshots/Fill-In4.gif)
-![Open Headfile](/Screenshots/Jump3.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Fill-In4.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Jump3.gif)
 
 3. (Optional) Create the Github/GitLab/Bitbucket repository with the repository name you filled in in step two:
 
-![Open Headfile](/Screenshots/create_repo.png)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/create_repo.png)
 
 And thats it. Now you got your Addon with a working addon updater:
-![Open Headfile](/Screenshots/Final-Step2.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Final-Step2.gif)
 
 ## System requirements:
 | **OS** | **Blender** |
