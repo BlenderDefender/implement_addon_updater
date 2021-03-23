@@ -1,5 +1,5 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/BlenderDefender/implement_addon_updater?label=Version&style=for-the-badge)
-[![Donate](https://img.shields.io/badge/DONATE!%20Funding%20Goal%3A%20%24280%20(2%20Days%20Developer%20Time)-%240-red?style=for-the-badge&logo=paypal)](https://www.paypal.com/donate?hosted_button_id=HFM7R3K9VXEXJ)
+[![Donate](https://img.shields.io/badge/DONATE!%20Funding%20Goal%3A%20%24280%20(2%20Days%20Developer%20Time)-%246-red?style=for-the-badge&logo=paypal)](https://www.paypal.com/donate?hosted_button_id=HFM7R3K9VXEXJ)
 
 ![GitHub](https://img.shields.io/github/license/BlenderDefender/implement_addon_updater?color=green&style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/BlenderDefender/implement_addon_updater?style=for-the-badge)
