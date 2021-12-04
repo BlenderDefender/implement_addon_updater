@@ -38,7 +38,7 @@ bl_info = {
     "location": "Text Editor > Text > Implement Addon Updater",
     "description": "Implement the Addon Updater the easy way.",
     "warning": "Checkout Gumroad for other Addons and more...",
-    "wiki_url": "https://github.com/BlenderDefender/implement_addon_updater#implement-addon-updater",
+    "doc_url": "https://github.com/BlenderDefender/implement_addon_updater#implement-addon-updater",
     "tracker_url": "https://github.com/BlenderDefender/implement_addon_updater/issues/new",
     "category": "Development"}
 
