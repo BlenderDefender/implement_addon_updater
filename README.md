@@ -1,5 +1,5 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/BlenderDefender/implement_addon_updater?label=Version&style=for-the-badge)
-![Donate](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FBlenderDefender%2FBlenderDefender%2Fshields_endpoint%2FIMPLEMENTADDONUPDATER.json)
+[![Donate](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FBlenderDefender%2FBlenderDefender%2Fshields_endpoint%2FIMPLEMENTADDONUPDATER.json)](https://bd-links.netlify.app/implement-addon-updater)
 
 ![GitHub](https://img.shields.io/github/license/BlenderDefender/implement_addon_updater?color=green&style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/BlenderDefender/implement_addon_updater?style=for-the-badge)
