@@ -1,3 +1,7 @@
+# Ignore IDE settings
+.vscode/
+
+# Ignore run artifacts
 __pycache__/
-implement addon-updater_updater
+*_updater/
 *.blend1
