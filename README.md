@@ -13,20 +13,20 @@ Taking your Addon to the next level with the Addon Updater is as easy as 3 simpl
 
 1. Go to Text >> Implement Addon Updater and Fill in the properties
 
-![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/CallDialog.gif)
-![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Dialog2.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/raw/main/Screenshots/CallDialog.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/raw/main/Screenshots/Dialog2.gif)
 
 2. Press OK and Follow the Instructions:
 
-![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Fill-In4.gif)
-![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Jump3.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/raw/main/Screenshots/Fill-In4.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/raw/main/Screenshots/Jump3.gif)
 
 3. (Optional) Create the Github/GitLab/Bitbucket repository with the repository name you filled in in step two:
 
-![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/create_repo.png)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/raw/main/Screenshots/create_repo.png)
 
 And thats it. Now you got your Addon with a working addon updater:
-![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/blob/master/Screenshots/Final-Step2.gif)
+![Open Headfile](https://github.com/BlenderDefender/implement_addon_updater/raw/main/Screenshots/Final-Step2.gif)
 
 ## System requirements:
 
