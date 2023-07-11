@@ -42,10 +42,9 @@ bl_info = {
     "tracker_url": "https://github.com/BlenderDefender/implement_addon_updater/issues/new",
     "category": "Development"}
 
+
 # Multiple uses:
 # -----------------------------------------------------------------------------
-
-
 def array_func(arr):
     for x in arr:
         print(x)
@@ -182,11 +181,22 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         addon_pref_append(ask_main_code_end_update, pref)
         classes_register(ask_classnames)
 
-        filepath = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "AddonUpdater.blend")
-        print(filepath)
-        with bpy.data.libraries.load(filepath) as (data_from, data_to):
-            data_to.texts = data_from.texts
+        # filepath = os.path.join(os.path.dirname(
+        #     os.path.abspath(__file__)), "AddonUpdater.blend")
+        # print(filepath)
+        # with bpy.data.libraries.load(filepath) as (data_from, data_to):
+        #     data_to.texts = data_from.texts
+
+        SCRIPT_DIR = os.path.dirname(__file__)
+        templates_dir = os.path.join(SCRIPT_DIR, "templates")
+
+        with open(os.path.join(templates_dir, "addon_updater.txt"), "r") as f:
+            updater = bpy.data.texts.new("addon_updater.py")
+            updater.write(f.read())
+
+        with open(os.path.join(templates_dir, "addon_updater_ops.txt"), "r") as f:
+            updater_ops = bpy.data.texts.new("addon_updater_ops.py")
+            updater_ops.write(f.read())
 
 #        print(ask_updater_engine)
         updater_engine(context, ask_updater_engine)
