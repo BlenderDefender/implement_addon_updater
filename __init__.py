@@ -21,6 +21,13 @@
 
 
 import bpy
+from bpy.props import (
+    BoolProperty,
+    EnumProperty,
+    IntProperty,
+    StringProperty
+)
+
 from . import addon_updater_ops
 
 import re
@@ -142,22 +149,36 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
     bl_label = "Implement Updater"
     bl_idname = "implement_updater.main"
 
-    ask_license_block: bpy.props.BoolProperty(
-        name="Add GPL 3 license Block", default=True)
+    ask_license_block: BoolProperty(
+        name="Add GPL 3 license Block",
+        default=True
+    )
 
-    ask_auto_check: bpy.props.BoolProperty(
-        name="Enable 'Auto Check for update' by default")
+    ask_auto_check: BoolProperty(
+        name="Enable 'Auto Check for update' by default"
+    )
 
-    ask_import_end: bpy.props.IntProperty(
-        name="Which line is the last of the import part?", default=3)
+    ask_import_end: IntProperty(
+        name="Which line is the last of the import part?",
+        default=3,
+        min=1
+    )
 
-    ask_main_code_end: bpy.props.IntProperty(
-        name="Which line is the last of the main part?", default=100)
+    ask_main_code_end: IntProperty(
+        name="Which line is the last of the main part?",
+        default=100,
+        min=1
+    )
 
-    ask_updater_engine: bpy.props.EnumProperty(items=[("github", "Github", "Choose Github as updater engine"), (
-        "gitlab", "GitLab", "Choose GitLab as updater engine"), ("bitbucket", "Bitbucket", "Choose Bitbucket as updater engine")], name="Choose updater engine")
+    ask_updater_engine: EnumProperty(items=[
+        ("github", "Github", "Choose Github as updater engine"),
+        ("gitlab", "GitLab", "Choose GitLab as updater engine"),
+        ("bitbucket", "Bitbucket", "Choose Bitbucket as updater engine")
+    ],
+        name="Choose updater engine"
+    )
 
-    ask_classnames: bpy.props.StringProperty(
+    ask_classnames: StringProperty(
         name="Type in your class names, seperated with a comma.", default="")
 
     def execute(self, context):
@@ -217,32 +238,32 @@ class IMPLEMENTUPDATER_APT_Preferences(bpy.types.AddonPreferences):
 
     # addon updater preferences
 
-    auto_check_update: bpy.props.BoolProperty(
+    auto_check_update: BoolProperty(
         name="Auto-check for Update",
         description="If enabled, auto-check for updates using an interval",
         default=True,
     )
-    updater_intrval_months: bpy.props.IntProperty(
+    updater_intrval_months: IntProperty(
         name='Months',
         description="Number of months between checking for updates",
         default=0,
         min=0
     )
-    updater_intrval_days: bpy.props.IntProperty(
+    updater_intrval_days: IntProperty(
         name='Days',
         description="Number of days between checking for updates",
         default=7,
         min=0,
         max=31
     )
-    updater_intrval_hours: bpy.props.IntProperty(
+    updater_intrval_hours: IntProperty(
         name='Hours',
         description="Number of hours between checking for updates",
         default=0,
         min=0,
         max=23
     )
-    updater_intrval_minutes: bpy.props.IntProperty(
+    updater_intrval_minutes: IntProperty(
         name='Minutes',
         description="Number of minutes between checking for updates",
         default=0,
