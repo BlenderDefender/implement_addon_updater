@@ -32,7 +32,7 @@ from . import addon_updater_ops
 
 import re
 import os
-from os.path import expanduser
+from os import path as p
 
 import shutil
 import platform
@@ -198,20 +198,20 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         add_addon_prefs(ask_main_code_end, pref)
         add_classes_registry(ask_classnames)
 
-        # filepath = os.path.join(os.path.dirname(
-        #     os.path.abspath(__file__)), "AddonUpdater.blend")
+        # filepath = p.join(p.dirname(
+        #     p.abspath(__file__)), "AddonUpdater.blend")
         # print(filepath)
         # with bpy.data.libraries.load(filepath) as (data_from, data_to):
         #     data_to.texts = data_from.texts
 
-        SCRIPT_DIR = os.path.dirname(__file__)
-        templates_dir = os.path.join(SCRIPT_DIR, "templates")
+        SCRIPT_DIR = p.dirname(__file__)
+        templates_dir = p.join(SCRIPT_DIR, "templates")
 
-        with open(os.path.join(templates_dir, "addon_updater.txt"), "r") as f:
+        with open(p.join(templates_dir, "addon_updater.txt"), "r") as f:
             updater = bpy.data.texts.new("addon_updater.py")
             updater.write(f.read())
 
-        with open(os.path.join(templates_dir, "addon_updater_ops.txt"), "r") as f:
+        with open(p.join(templates_dir, "addon_updater_ops.txt"), "r") as f:
             updater_ops = bpy.data.texts.new("addon_updater_ops.py")
             updater_ops.write(f.read())
 
