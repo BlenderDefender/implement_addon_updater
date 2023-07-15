@@ -27,6 +27,10 @@ from bpy.props import (
     IntProperty,
     StringProperty
 )
+from bpy.types import (
+    Context,
+    UILayout
+)
 
 from . import addon_updater_ops
 
@@ -145,28 +149,28 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
     bl_label = "Implement Updater"
     bl_idname = "implement_updater.main"
 
-    ask_license_block: BoolProperty(
+    add_license_block: BoolProperty(
         name="Add GPL 3 license Block",
         default=True
     )
 
-    ask_auto_check: BoolProperty(
+    auto_check: BoolProperty(
         name="Enable 'Auto Check for update' by default"
     )
 
-    ask_import_end: IntProperty(
+    import_end: IntProperty(
         name="Which line is the last of the import part?",
         default=3,
         min=1
     )
 
-    ask_main_code_end: IntProperty(
+    main_code_end: IntProperty(
         name="Which line is the last of the main part?",
         default=100,
         min=1
     )
 
-    ask_updater_engine: EnumProperty(items=[
+    updater_engine: EnumProperty(items=[
         ("github", "Github", "Choose Github as updater engine"),
         ("gitlab", "GitLab", "Choose GitLab as updater engine"),
         ("bitbucket", "Bitbucket", "Choose Bitbucket as updater engine")
@@ -174,29 +178,21 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         name="Choose updater engine"
     )
 
-    ask_classnames: StringProperty(
+    classnames: StringProperty(
         name="Type in your class names, seperated with a comma.", default="")
 
     def execute(self, context):
-
-        ask_license_block = self.ask_license_block
-        ask_auto_check = self.ask_auto_check
-        ask_import_end = self.ask_import_end
-        ask_main_code_end = self.ask_main_code_end
-        ask_classnames = self.ask_classnames
-        ask_updater_engine = self.ask_updater_engine
-
-        auto_check_true_or_false = auto_check_t_o_f(ask_auto_check)
+        auto_check_true_or_false = auto_check_t_o_f(self.auto_check)
 
         gpl = ['# ##### BEGIN GPL LICENSE BLOCK #####\n', '#\n', "#  <one line to give the program's name and a brief idea of what it does.>\n", '#    Copyright (C) <year>  <name of author>\n', '#\n', '#  This program is free software; you can redistribute it and/or\n', '#  modify it under the terms of the GNU General Public License\n', '#  as published by the Free Software Foundation; either version 3\n', '#  of the License, or (at your option) any later version.\n', '#\n', '#  This program is distributed in the hope that it will be useful,\n',
                '#  but WITHOUT ANY WARRANTY; without even the implied warranty of\n', '#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n', '#  GNU General Public License for more details.\n', '#\n', '#  You should have received a copy of the GNU General Public License\n', '#  along with this program; if not, write to the Free Software Foundation,\n', '#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n', '#\n', '# ##### END GPL LICENSE BLOCK #####', '\n\n']
         pref = ['\n', 'class DemoPreferences(bpy.types.AddonPreferences):\n', '\tbl_idname = __package__\n', '\n', '\t# addon updater preferences\n', '\n', '\tauto_check_update: bpy.props.BoolProperty(\n', '\t\tname="Auto-check for Update",\n', '\t\tdescription="If enabled, auto-check for updates using an interval",\n', auto_check_true_or_false, '\t\t)\n', '\tupdater_intrval_months: bpy.props.IntProperty(\n', "\t\tname='Months',\n", '\t\tdescription="Number of months between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0\n', '\t\t)\n', '\tupdater_intrval_days: bpy.props.IntProperty(\n', "\t\tname='Days',\n", '\t\tdescription="Number of days between checking for updates",\n', '\t\tdefault=7,\n', '\t\tmin=0,\n', '\t\tmax=31\n', '\t\t)\n', '\tupdater_intrval_hours: bpy.props.IntProperty(\n', "\t\tname='Hours',\n", '\t\tdescription="Number of hours between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0,\n', '\t\tmax=23\n', '\t\t)\n', '\tupdater_intrval_minutes: bpy.props.IntProperty(\n', "\t\tname='Minutes',\n",
                 '\t\tdescription="Number of minutes between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0,\n', '\t\tmax=59\n', '\t\t)\n', '\n', '\tdef draw(self, context):\n', '\t\tlayout = self.layout\n', '\t\t# col = layout.column() # works best if a column, or even just self.layout\n', '\t\tmainrow = layout.row()\n', '\t\tcol = mainrow.column()\n', '\n', '\t\t# updater draw function\n', '\t\t# could also pass in col as third arg\n', '\t\taddon_updater_ops.update_settings_ui(self, context)\n', '\n', '\t\t# Alternate draw function, which is more condensed and can be\n', '\t\t# placed within an existing draw function. Only contains:\n', '\t\t#   1) check for update/update now buttons\n', '\t\t#   2) toggle for auto-check (interval will be equal to what is set above)\n', '\t\t# addon_updater_ops.update_settings_ui_condensed(self, context, col)\n', '\n', '\t\t# Adding another column to help show the above condensed ui as one column\n', '\t\t# col = mainrow.column()\n', '\t\t# col.scale_y = 2\n', '\t\t# col.operator("wm.url_open","Open webpage ").url=addon_updater_ops.updater.website\n']
 
-        ask_main_code_end += add_gpl_and_imports(
-            ask_license_block, ask_import_end, gpl)
-        add_addon_prefs(ask_main_code_end, pref)
-        add_classes_registry(ask_classnames)
+        main_code_end = self.main_code_end + add_gpl_and_imports(
+            self.add_license_block, self.import_end, gpl)
+        add_addon_prefs(main_code_end, pref)
+        add_classes_registry(self.classnames)
 
         # filepath = p.join(p.dirname(
         #     p.abspath(__file__)), "AddonUpdater.blend")
@@ -215,14 +211,28 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
             updater_ops = bpy.data.texts.new("addon_updater_ops.py")
             updater_ops.write(f.read())
 
-#        print(ask_updater_engine)
-        insert_updater_engine(context, ask_updater_engine)
+#        print(self.updater_engine)
+        insert_updater_engine(context, self.updater_engine)
 
         return {'FINISHED'}
 
     def invoke(self, context, event):
 
         return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context: 'Context'):
+        layout: 'UILayout' = self.layout
+
+        layout.prop(self, "add_license_block")
+        layout.separator()
+
+        layout.prop(self, "import_end")
+        layout.prop(self, "main_code_end")
+        layout.separator()
+
+        layout.prop(self, "updater_engine", text="Updater Engine")
+        layout.prop(self, "classnames", text="Classnames")
+        layout.prop(self, "auto_check")
 
 
 def menu_func(self, context):
