@@ -41,6 +41,8 @@ from os import path as p
 import shutil
 import platform
 
+import time
+
 bl_info = {
     "name": "Implement Addon Updater",
     "author": "Blender Defender",
@@ -52,6 +54,8 @@ bl_info = {
     "doc_url": "https://github.com/BlenderDefender/implement_addon_updater#implement-addon-updater",
     "tracker_url": "https://github.com/BlenderDefender/implement_addon_updater/issues/new",
     "category": "Development"}
+
+SCRIPT_DIR = p.dirname(__file__)
 
 
 # Multiple uses:
@@ -108,25 +112,6 @@ def add_addon_prefs(code_end, pref):
     print("add_addon_prefs was a success")
 
 
-def add_gpl_and_imports(add_license, imports_end, gpl):
-
-    bpy.ops.text.jump(line=imports_end+1)
-    bpy.ops.text.insert(text="from . import addon_updater_ops\n")
-
-    if add_license:
-
-        bpy.ops.text.jump(line=1)
-        bpy.ops.text.select_line()
-        bpy.ops.text.cut()
-
-        insert_text_from_array(gpl)
-        # bpy.ops.text.move(type='NEXT_LINE')
-        bpy.ops.text.paste()
-        return 21
-
-    return 0
-
-
 def add_classes_registry(text):
     t = re.sub(r'(,)', r'\1\n\t', text)
     classes = "classes = (\n\t " + t + ",\n\t DemoPreferences\n)"
@@ -151,6 +136,9 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         name="Add GPL 3 license Block",
         default=True
     )
+    license_author: StringProperty(name="Author")
+    license_description: StringProperty(
+        name="Description", description="nne line to give the program's name and a brief idea of what it does")
 
     auto_check: BoolProperty(
         name="Enable 'Auto Check for update' by default"
@@ -180,13 +168,11 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         name="Type in your class names, seperated with a comma.", default="")
 
     def execute(self, context):
-        gpl = ['# ##### BEGIN GPL LICENSE BLOCK #####\n', '#\n', "#  <one line to give the program's name and a brief idea of what it does.>\n", '#    Copyright (C) <year>  <name of author>\n', '#\n', '#  This program is free software; you can redistribute it and/or\n', '#  modify it under the terms of the GNU General Public License\n', '#  as published by the Free Software Foundation; either version 3\n', '#  of the License, or (at your option) any later version.\n', '#\n', '#  This program is distributed in the hope that it will be useful,\n',
-               '#  but WITHOUT ANY WARRANTY; without even the implied warranty of\n', '#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n', '#  GNU General Public License for more details.\n', '#\n', '#  You should have received a copy of the GNU General Public License\n', '#  along with this program; if not, write to the Free Software Foundation,\n', '#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n', '#\n', '# ##### END GPL LICENSE BLOCK #####', '\n\n']
         pref = ['\n', 'class DemoPreferences(bpy.types.AddonPreferences):\n', '\tbl_idname = __package__\n', '\n', '\t# addon updater preferences\n', '\n', '\tauto_check_update: bpy.props.BoolProperty(\n', '\t\tname="Auto-check for Update",\n', '\t\tdescription="If enabled, auto-check for updates using an interval",\n', f"\t\tdefault={self.add_license_block == True},\n", '\t\t)\n', '\tupdater_intrval_months: bpy.props.IntProperty(\n', "\t\tname='Months',\n", '\t\tdescription="Number of months between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0\n', '\t\t)\n', '\tupdater_intrval_days: bpy.props.IntProperty(\n', "\t\tname='Days',\n", '\t\tdescription="Number of days between checking for updates",\n', '\t\tdefault=7,\n', '\t\tmin=0,\n', '\t\tmax=31\n', '\t\t)\n', '\tupdater_intrval_hours: bpy.props.IntProperty(\n', "\t\tname='Hours',\n", '\t\tdescription="Number of hours between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0,\n', '\t\tmax=23\n', '\t\t)\n', '\tupdater_intrval_minutes: bpy.props.IntProperty(\n', "\t\tname='Minutes',\n",
                 '\t\tdescription="Number of minutes between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0,\n', '\t\tmax=59\n', '\t\t)\n', '\n', '\tdef draw(self, context):\n', '\t\tlayout = self.layout\n', '\t\t# col = layout.column() # works best if a column, or even just self.layout\n', '\t\tmainrow = layout.row()\n', '\t\tcol = mainrow.column()\n', '\n', '\t\t# updater draw function\n', '\t\t# could also pass in col as third arg\n', '\t\taddon_updater_ops.update_settings_ui(self, context)\n', '\n', '\t\t# Alternate draw function, which is more condensed and can be\n', '\t\t# placed within an existing draw function. Only contains:\n', '\t\t#   1) check for update/update now buttons\n', '\t\t#   2) toggle for auto-check (interval will be equal to what is set above)\n', '\t\t# addon_updater_ops.update_settings_ui_condensed(self, context, col)\n', '\n', '\t\t# Adding another column to help show the above condensed ui as one column\n', '\t\t# col = mainrow.column()\n', '\t\t# col.scale_y = 2\n', '\t\t# col.operator("wm.url_open","Open webpage ").url=addon_updater_ops.updater.website\n']
 
-        main_code_end = self.main_code_end + add_gpl_and_imports(
-            self.add_license_block, self.import_end, gpl)
+        main_code_end = self.main_code_end + self.add_gpl_and_imports()
+
         add_addon_prefs(main_code_end, pref)
         add_classes_registry(self.classnames)
 
@@ -196,7 +182,6 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         # with bpy.data.libraries.load(filepath) as (data_from, data_to):
         #     data_to.texts = data_from.texts
 
-        SCRIPT_DIR = p.dirname(__file__)
         templates_dir = p.join(SCRIPT_DIR, "templates")
 
         with open(p.join(templates_dir, "addon_updater.txt"), "r") as f:
@@ -220,6 +205,9 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         layout: 'UILayout' = self.layout
 
         layout.prop(self, "add_license_block")
+        if self.add_license_block:
+            layout.prop(self, "license_author")
+            layout.prop(self, "license_description")
         layout.separator()
 
         layout.prop(self, "import_end")
@@ -229,6 +217,40 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         layout.prop(self, "updater_engine", text="Updater Engine")
         layout.prop(self, "classnames", text="Classnames")
         layout.prop(self, "auto_check")
+
+    def add_gpl_and_imports(self):
+
+        bpy.ops.text.jump(line=self.import_end + 1)
+        bpy.ops.text.insert(text="from . import addon_updater_ops\n")
+
+        if self.add_license_block:
+            bpy.ops.text.jump(line=1)
+            bpy.ops.text.select_line()
+            bpy.ops.text.cut()
+
+            with open(p.join(SCRIPT_DIR, "templates", "gpl_license_block.txt"), "r", encoding="utf-8") as f:
+                gpl_data = f.read()
+
+            if self.license_description == "":
+                gpl_data = gpl_data.replace(
+                    "<program description>", "<one line to give the program's name and a brief idea of what it does.>")
+            else:
+                gpl_data = gpl_data.replace(
+                    "<program description>", f"<{self.license_description}>")
+
+            gpl_data = gpl_data.replace("<year>", time.strftime("<%Y>"))
+
+            if self.license_author != "":
+                gpl_data = gpl_data.replace(
+                    "<name of author>", f"<{self.license_author}>")
+
+            insert_text_from_array(gpl_data + "\n")
+            # bpy.ops.text.move(type='NEXT_LINE')
+            bpy.ops.text.paste()
+
+            return len(gpl_data.split("\n"))
+
+        return 0
 
 
 def menu_func(self, context):
