@@ -102,13 +102,18 @@ def insert_updater_engine(context, machine):
 # Script Operators
 # -----------------------------------------------------------------------------
 
-def add_addon_prefs(code_end, pref):
+def add_addon_prefs(code_end, auto_check):
+    pref = ""
+    with open(p.join(SCRIPT_DIR, "templates", "preferences.txt"), "r", encoding="utf-8") as f:
+        pref = f.read()
+
+    pref = pref.replace("\"<auto_check_update>\"", str(auto_check == True))
 
     bpy.ops.text.jump(line=code_end+1)
     bpy.ops.text.select_line()
     bpy.ops.text.cut()
 
-    insert_text_from_array(pref)
+    insert_text_from_array(pref + "\n")
     print("add_addon_prefs was a success")
 
 
@@ -168,12 +173,10 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         name="Type in your class names, seperated with a comma.", default="")
 
     def execute(self, context):
-        pref = ['\n', 'class DemoPreferences(bpy.types.AddonPreferences):\n', '\tbl_idname = __package__\n', '\n', '\t# addon updater preferences\n', '\n', '\tauto_check_update: bpy.props.BoolProperty(\n', '\t\tname="Auto-check for Update",\n', '\t\tdescription="If enabled, auto-check for updates using an interval",\n', f"\t\tdefault={self.add_license_block == True},\n", '\t\t)\n', '\tupdater_intrval_months: bpy.props.IntProperty(\n', "\t\tname='Months',\n", '\t\tdescription="Number of months between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0\n', '\t\t)\n', '\tupdater_intrval_days: bpy.props.IntProperty(\n', "\t\tname='Days',\n", '\t\tdescription="Number of days between checking for updates",\n', '\t\tdefault=7,\n', '\t\tmin=0,\n', '\t\tmax=31\n', '\t\t)\n', '\tupdater_intrval_hours: bpy.props.IntProperty(\n', "\t\tname='Hours',\n", '\t\tdescription="Number of hours between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0,\n', '\t\tmax=23\n', '\t\t)\n', '\tupdater_intrval_minutes: bpy.props.IntProperty(\n', "\t\tname='Minutes',\n",
-                '\t\tdescription="Number of minutes between checking for updates",\n', '\t\tdefault=0,\n', '\t\tmin=0,\n', '\t\tmax=59\n', '\t\t)\n', '\n', '\tdef draw(self, context):\n', '\t\tlayout = self.layout\n', '\t\t# col = layout.column() # works best if a column, or even just self.layout\n', '\t\tmainrow = layout.row()\n', '\t\tcol = mainrow.column()\n', '\n', '\t\t# updater draw function\n', '\t\t# could also pass in col as third arg\n', '\t\taddon_updater_ops.update_settings_ui(self, context)\n', '\n', '\t\t# Alternate draw function, which is more condensed and can be\n', '\t\t# placed within an existing draw function. Only contains:\n', '\t\t#   1) check for update/update now buttons\n', '\t\t#   2) toggle for auto-check (interval will be equal to what is set above)\n', '\t\t# addon_updater_ops.update_settings_ui_condensed(self, context, col)\n', '\n', '\t\t# Adding another column to help show the above condensed ui as one column\n', '\t\t# col = mainrow.column()\n', '\t\t# col.scale_y = 2\n', '\t\t# col.operator("wm.url_open","Open webpage ").url=addon_updater_ops.updater.website\n']
 
         main_code_end = self.main_code_end + self.add_gpl_and_imports()
 
-        add_addon_prefs(main_code_end, pref)
+        add_addon_prefs(main_code_end, self.auto_check)
         add_classes_registry(self.classnames)
 
         # filepath = p.join(p.dirname(
