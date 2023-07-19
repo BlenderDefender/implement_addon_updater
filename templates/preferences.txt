@@ -1,5 +1,5 @@
 
-class DemoPreferences(bpy.types.AddonPreferences):
+class MY_ADDON_APT_preferences(bpy.types.AddonPreferences):
     bl_idname = __package__
 
     # addon updater preferences

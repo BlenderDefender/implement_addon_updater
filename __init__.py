@@ -102,24 +102,10 @@ def insert_updater_engine(context, machine):
 # Script Operators
 # -----------------------------------------------------------------------------
 
-def add_addon_prefs(code_end, auto_check):
-    pref = ""
-    with open(p.join(SCRIPT_DIR, "templates", "preferences.txt"), "r", encoding="utf-8") as f:
-        pref = f.read()
 
-    pref = pref.replace("\"<auto_check_update>\"", str(auto_check == True))
-
-    bpy.ops.text.jump(line=code_end+1)
-    bpy.ops.text.select_line()
-    bpy.ops.text.cut()
-
-    insert_text_from_array(pref + "\n")
-    print("add_addon_prefs was a success")
-
-
-def add_classes_registry(text):
+def add_classes_registry(text, classname):
     t = re.sub(r'(,)', r'\1\n\t', text)
-    classes = "classes = (\n\t " + t + ",\n\t DemoPreferences\n)"
+    classes = f"classes = (\n\t {t},\n\t {classname}\n)"
     ret = ['\n\n', classes, '\n', '\n', 'def register():\n', '\t# addon updater code and configurations\n', '\t# in case of broken version, try to register the updater first\n', '\t# so that users can revert back to a working version\n', '\taddon_updater_ops.register(bl_info)\n', '\n', '\t# register the example panel, to show updater buttons\n', '\tfor cls in classes:\n',
            '\t\taddon_updater_ops.make_annotations(cls) # to avoid blender 2.8 warnings\n', '\t\tbpy.utils.register_class(cls)\n', '\n', '\n', 'def unregister():\n', '\t# addon updater unregister\n', '\taddon_updater_ops.unregister()\n', '\n', '\t# register the example panel, to show updater buttons\n', '\tfor cls in reversed(classes):\n', '\t\tbpy.utils.unregister_class(cls)\n\n']
     print(ret)
@@ -169,15 +155,18 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         name="Choose updater engine"
     )
 
+    addon_name: StringProperty(
+        name="Addon Name", description="Type in the name of your addon.", default="")
+
     classnames: StringProperty(
-        name="Type in your class names, seperated with a comma.", default="")
+        name="Classnames", description="Type in your class names, seperated with a comma", default="")
 
     def execute(self, context):
 
         main_code_end = self.main_code_end + self.add_gpl_and_imports()
 
-        add_addon_prefs(main_code_end, self.auto_check)
-        add_classes_registry(self.classnames)
+        self.add_addon_prefs(main_code_end)
+        add_classes_registry(self.classnames, self.addon_prefs_string)
 
         # filepath = p.join(p.dirname(
         #     p.abspath(__file__)), "AddonUpdater.blend")
@@ -195,7 +184,7 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
             updater_ops = bpy.data.texts.new("addon_updater_ops.py")
             updater_ops.write(f.read())
 
-#        print(self.updater_engine)
+        # print(self.updater_engine)
         insert_updater_engine(context, self.updater_engine)
 
         return {'FINISHED'}
@@ -218,7 +207,8 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         layout.separator()
 
         layout.prop(self, "updater_engine", text="Updater Engine")
-        layout.prop(self, "classnames", text="Classnames")
+        layout.prop(self, "addon_name")
+        layout.prop(self, "classnames")
         layout.prop(self, "auto_check")
 
     def add_gpl_and_imports(self):
@@ -254,6 +244,28 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
             return len(gpl_data.split("\n"))
 
         return 0
+
+    def add_addon_prefs(self, code_end):
+        pref = ""
+        with open(p.join(SCRIPT_DIR, "templates", "preferences.txt"), "r", encoding="utf-8") as f:
+            pref = f.read()
+
+        pref = pref.replace("\"<auto_check_update>\"",
+                            str(self.auto_check == True))
+
+        addon_name_as_class = self.addon_name.upper().strip().replace(" ", "_")
+        if addon_name_as_class == "":
+            addon_name_as_class = "MY_ADDON"
+        self.addon_prefs_string = addon_name_as_class + "_APT_preferences"
+        pref = pref.replace("MY_ADDON_APT_preferences",
+                            self.addon_prefs_string)
+
+        bpy.ops.text.jump(line=code_end+1)
+        bpy.ops.text.select_line()
+        bpy.ops.text.cut()
+
+        insert_text_from_array(pref + "\n")
+        print("add_addon_prefs was a success")
 
 
 def menu_func(self, context):
