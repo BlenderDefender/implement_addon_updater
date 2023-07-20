@@ -1,0 +1,27 @@
+
+classes = (
+    # <placeholder>
+)
+
+
+def register():
+    # addon updater code and configurations
+    # in case of broken version, try to register the updater first
+    # so that users can revert back to a working version
+    addon_updater_ops.register(bl_info)
+
+    # register the example panel, to show updater buttons
+    for cls in classes:
+
+        addon_updater_ops.make_annotations(
+            cls)  # to avoid blender 2.8 warnings
+        bpy.utils.register_class(cls)
+
+
+def unregister():
+    # addon updater unregister
+    addon_updater_ops.unregister()
+
+    # register the example panel, to show updater buttons
+    for cls in reversed(classes):
+        bpy.utils.unregister_class(cls)

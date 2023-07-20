@@ -99,25 +99,6 @@ def insert_updater_engine(context, machine):
 # -----------------------------------------------------------------------------
 
 
-# Script Operators
-# -----------------------------------------------------------------------------
-
-
-def add_classes_registry(text, classname):
-    t = re.sub(r'(,)', r'\1\n\t', text)
-    classes = f"classes = (\n\t {t},\n\t {classname}\n)"
-    ret = ['\n\n', classes, '\n', '\n', 'def register():\n', '\t# addon updater code and configurations\n', '\t# in case of broken version, try to register the updater first\n', '\t# so that users can revert back to a working version\n', '\taddon_updater_ops.register(bl_info)\n', '\n', '\t# register the example panel, to show updater buttons\n', '\tfor cls in classes:\n',
-           '\t\taddon_updater_ops.make_annotations(cls) # to avoid blender 2.8 warnings\n', '\t\tbpy.utils.register_class(cls)\n', '\n', '\n', 'def unregister():\n', '\t# addon updater unregister\n', '\taddon_updater_ops.unregister()\n', '\n', '\t# register the example panel, to show updater buttons\n', '\tfor cls in reversed(classes):\n', '\t\tbpy.utils.unregister_class(cls)\n\n']
-    print(ret)
-
-    bpy.ops.text.move(type='NEXT_LINE')
-    insert_text_from_array(ret)
-    return ret
-
-
-# -----------------------------------------------------------------------------
-
-
 class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
     """Implement the Addon Updater quick and easy"""
     bl_label = "Implement Updater"
@@ -166,7 +147,7 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         main_code_end = self.main_code_end + self.add_gpl_and_imports()
 
         self.add_addon_prefs(main_code_end)
-        add_classes_registry(self.classnames, self.addon_prefs_string)
+        self.add_classes_registry()
 
         # filepath = p.join(p.dirname(
         #     p.abspath(__file__)), "AddonUpdater.blend")
@@ -266,6 +247,18 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
 
         insert_text_from_array(pref + "\n")
         print("add_addon_prefs was a success")
+
+    def add_classes_registry(self):
+        t = re.sub(r'(,)', r'\1\n\t', self.classnames)
+        classes = f"{t},\n\t{self.addon_prefs_string},\n"
+
+        with open(p.join(SCRIPT_DIR, "templates", "register_code.txt"), "r", encoding="utf-8") as f:
+            register_code = f.read()
+
+        register_code = register_code.replace("# <placeholder>", classes)
+
+        bpy.ops.text.move(type='NEXT_LINE')
+        insert_text_from_array(register_code)
 
 
 def menu_func(self, context):
