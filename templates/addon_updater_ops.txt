@@ -1319,10 +1319,8 @@ def register(bl_info):
         return
     updater.clear_state() # clear internal vars, avoids reloading oddities
 
-#	confirm your updater "engine" (Choose between Github, GitLab and Bitbucket)
-    updater.engine = "Github"
-#	Jump to line 60 after setting updater.user, updater.repo and updater.website
-#   Jump to line 980, if you want to hide the minutes/hours intervals
+	# confirm your updater "engine" (Choose between Github, GitLab and Bitbucket)
+    updater.engine = "<engine>"
 
     # If using private repository, indicate the token here
     # Must be set after assigning the engine.
@@ -1331,6 +1329,8 @@ def register(bl_info):
     # other considerations and suggestions from a security standpoint
     updater.private_token = None # "tokenstring"
 
+#	Jump to line 60 after setting updater.user, updater.repo and updater.website
+#   Jump to line 980, if you want to hide the minutes/hours intervals
     # choose your own username(all lowercase), must match website (not needed for GitLab)
     updater.user = "blenderdefender"
 

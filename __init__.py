@@ -68,37 +68,6 @@ def insert_text_from_array(arr):
 # -----------------------------------------------------------------------------
 
 
-# addon-updater-ops operators
-# -----------------------------------------------------------------------------
-
-def insert_updater_engine(context, machine):
-    context.space_data.text = bpy.data.texts['addon_updater_ops.py']
-    bpy.ops.text.jump(line=1323)
-
-    if machine == "github":
-        print("updater.engine = GitHub")
-        return
-
-    bpy.ops.text.select_line()
-    bpy.ops.text.cut()
-
-    if machine == "gitlab":
-        print("updater.engine = GitLab")
-        bpy.ops.text.insert(text='\tupdater.engine = "GitLab"')
-        return
-
-    if machine == "bitbucket":
-        print("updater.engine = Bitbucket")
-        bpy.ops.text.insert(text='\tupdater.engine = "Bitbucket"')
-        return
-
-    print("Defaulting to GitHub")
-    bpy.ops.text.insert(text='\tupdater.engine = "GitHub"')
-
-
-# -----------------------------------------------------------------------------
-
-
 class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
     """Implement the Addon Updater quick and easy"""
     bl_label = "Implement Updater"
@@ -129,9 +98,9 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
     )
 
     updater_engine: EnumProperty(items=[
-        ("github", "Github", "Choose Github as updater engine"),
-        ("gitlab", "GitLab", "Choose GitLab as updater engine"),
-        ("bitbucket", "Bitbucket", "Choose Bitbucket as updater engine")
+        ("GitHub", "GitHub", "Choose GitHub as updater engine"),
+        ("GitLab", "GitLab", "Choose GitLab as updater engine"),
+        ("Bitbucket", "Bitbucket", "Choose Bitbucket as updater engine")
     ],
         name="Choose updater engine"
     )
@@ -162,11 +131,17 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
             updater.write(f.read())
 
         with open(p.join(templates_dir, "addon_updater_ops.txt"), "r") as f:
-            updater_ops = bpy.data.texts.new("addon_updater_ops.py")
-            updater_ops.write(f.read())
+            ops_template: str = f.read()
+
+        ops_template = ops_template.replace("<engine>", self.updater_engine)
+
+        updater_ops = bpy.data.texts.new("addon_updater_ops.py")
+        updater_ops.write(ops_template)
+
+        context.space_data.text = bpy.data.texts['addon_updater_ops.py']
+        bpy.ops.text.jump(line=1332)
 
         # print(self.updater_engine)
-        insert_updater_engine(context, self.updater_engine)
 
         return {'FINISHED'}
 
