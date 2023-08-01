@@ -53,17 +53,17 @@ bl_info = {
     "warning": "Checkout Gumroad for other Addons and more...",
     "doc_url": "https://github.com/BlenderDefender/implement_addon_updater#implement-addon-updater",
     "tracker_url": "https://github.com/BlenderDefender/implement_addon_updater/issues/new",
-    "category": "Development"}
+    "category": "Development"
+}
 
 SCRIPT_DIR = p.dirname(__file__)
 
 
 # Multiple uses:
 # -----------------------------------------------------------------------------
-def insert_text_from_array(arr):
-    for x in arr:
-        print(x)
-        bpy.ops.text.insert(text=x)
+def insert_and_print_text(arr):
+    print(arr)
+    bpy.ops.text.insert(text=arr)
 
 # -----------------------------------------------------------------------------
 
@@ -193,7 +193,7 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
                 gpl_data = gpl_data.replace(
                     "<name of author>", f"<{self.license_author}>")
 
-            insert_text_from_array(gpl_data + "\n")
+            insert_and_print_text(gpl_data + "\n")
             # bpy.ops.text.move(type='NEXT_LINE')
             bpy.ops.text.paste()
 
@@ -220,7 +220,7 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         bpy.ops.text.select_line()
         bpy.ops.text.cut()
 
-        insert_text_from_array(pref + "\n")
+        insert_and_print_text(pref + "\n")
         print("add_addon_prefs was a success")
 
     def add_classes_registry(self):
@@ -233,7 +233,7 @@ class IMPLEMENTUPDATER_OT_main(bpy.types.Operator):
         register_code = register_code.replace("# <placeholder>", classes)
 
         bpy.ops.text.move(type='NEXT_LINE')
-        insert_text_from_array(register_code)
+        insert_and_print_text(register_code)
 
 
 def menu_func(self, context):
